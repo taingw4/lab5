@@ -2,7 +2,6 @@
     this is where you will add your JavaScript to complete Lab 5
 */
 
-
 /* sortObjArray()
     sorts an array of objects by a given property name
     the property values are compared using standard 
@@ -34,3 +33,35 @@ function sortObjArray(objArray, propName) {
     });
 } //sortObjArray()
 
+function render(entries) {
+    var template = $('.template');
+    var addressBook = $('.address-book');
+    var instance;
+    addressBook.empty();
+    $.each(Employees.entries, function(){
+        instance = template.clone();
+        //$.each(prop, function() {
+        for (prop in this) { 
+            if (prop === 'pic') {
+                instance.find('.pic').attr({
+                    src: this[prop],
+                    alt: 'Picture of ' + this.first + ' ' + this.last
+                });
+            } else {
+                instance.find('.' + prop).html(this[prop]);
+            }
+            //instance.find('.first').html(this.first);
+            //instance.find('.last').html(this.last);    
+            //instance.find('.title').html(this.title);
+            //instance.find('.department').html(this.department);
+            
+            instance.removeClass('template');
+            addressBook.append(instance);
+        }
+    });
+}
+
+$(function() {
+   sortObjArray(Employees.entries, 'last');
+   render(Employees);             
+});
