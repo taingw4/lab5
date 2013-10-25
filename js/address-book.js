@@ -37,10 +37,10 @@ function render(entries) {
     var template = $('.template');
     var addressBook = $('.address-book');
     var instance;
+    addressBook.hide(600);
     addressBook.empty();
-    $.each(Employees.entries, function(){
+    $.each(entries, function(){
         instance = template.clone();
-        //$.each(prop, function() {
         for (prop in this) { 
             if (prop === 'pic') {
                 instance.find('.pic').attr({
@@ -50,18 +50,22 @@ function render(entries) {
             } else {
                 instance.find('.' + prop).html(this[prop]);
             }
-            //instance.find('.first').html(this.first);
-            //instance.find('.last').html(this.last);    
-            //instance.find('.title').html(this.title);
-            //instance.find('.department').html(this.department);
-            
             instance.removeClass('template');
             addressBook.append(instance);
         }
     });
+    addressBook.fadeIn(600);
 }
 
 $(function() {
    sortObjArray(Employees.entries, 'last');
-   render(Employees);             
+   render(Employees.entries);    
+   $('.sort-ui .btn').click(function() {
+        var sortBtn = $(this);
+        var sort = sortBtn.attr('data-sortby');
+        sortObjArray(Employees.entries, sort);
+        render(Employees.entries); 
+        sortBtn.siblings().removeClass('active');
+        sortBtn.addClass('active');        
+   });         
 });
